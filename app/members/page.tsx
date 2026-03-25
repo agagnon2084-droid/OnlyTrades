@@ -89,7 +89,7 @@ function MembersContent() {
               className="card bg-[var(--bg-void)] p-5 flex flex-col gap-3 group transition-all duration-[80ms]"
             >
               <div className="flex items-start gap-3">
-                <Avatar src={member.avatar} name={member.displayName || member.name || member.username || "?"} size="md" online={isOnline(member.lastActiveAt) ?? false} />
+                <Avatar src={member.avatar} name={member.displayName || member.name || member.username || "?"} size="md" online={isOnline(member.lastActiveAt) || false} />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-mono font-medium text-[var(--text-primary)] group-hover:text-[var(--accent-acid)] transition-colors truncate">

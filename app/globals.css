@@ -1,26 +1,250 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=IBM+Plex+Mono:wght@300;400;500;600&family=Bebas+Neue&family=Orbitron:wght@400;700;900&display=swap');
+
+/* ── CYBERPUNK DESIGN TOKENS ────────────────────────────────── */
+@theme inline {
+  --color-void: #0a0a0a;
+  --color-surface: #111111;
+  --color-elevated: #1a1a1a;
+  --color-acid: #c8ff00;
+  --color-burn: #ff3c00;
+  --color-static: #00ffcc;
+  --color-primary-text: #e8e8e0;
+  --color-dim: #666660;
+  --color-ghost: #333330;
+  --color-border: #2a2a2a;
+  --color-border-hot: #c8ff00;
+  --color-glitch1: #ff003c;
+  --color-glitch2: #00ffcc;
+  --font-mono: 'IBM Plex Mono', 'Share Tech Mono', monospace;
+  --font-display: 'Orbitron', monospace;
+  --font-label: 'Bebas Neue', sans-serif;
+}
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-void: #0a0a0a;
+  --bg-surface: #111111;
+  --bg-elevated: #1a1a1a;
+  --accent-acid: #c8ff00;
+  --accent-burn: #ff3c00;
+  --accent-static: #00ffcc;
+  --text-primary: #e8e8e0;
+  --text-dim: #666660;
+  --text-ghost: #333330;
+  --border-raw: #2a2a2a;
+  --border-hot: #c8ff00;
+  --glitch-1: #ff003c;
+  --glitch-2: #00ffcc;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ── GLOBAL RESET ────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  border-radius: 0 !important;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--bg-void);
+  color: var(--text-primary);
+  font-family: 'IBM Plex Mono', monospace;
+  cursor: crosshair;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg-void);
+  color: var(--text-primary);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
 }
+
+/* ── SCANLINE OVERLAY ────────────────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.15) 2px,
+    rgba(0, 0, 0, 0.15) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ── CUSTOM SCROLLBAR ────────────────────────────────────────── */
+::-webkit-scrollbar { width: 2px; height: 2px; }
+::-webkit-scrollbar-track { background: var(--bg-void); }
+::-webkit-scrollbar-thumb { background: var(--accent-acid); }
+
+/* ── CUSTOM CURSOR ───────────────────────────────────────────── */
+* { cursor: crosshair; }
+a, button, [role="button"], select, input, textarea, label { cursor: crosshair; }
+
+/* ── TYPOGRAPHY ──────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Orbitron', monospace;
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+}
+
+/* ── GLITCH EFFECT ───────────────────────────────────────────── */
+.glitch {
+  position: relative;
+}
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  background: transparent;
+}
+.glitch::before {
+  color: var(--glitch-1);
+  animation: glitch-1 3s infinite;
+  clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+}
+.glitch::after {
+  color: var(--glitch-2);
+  animation: glitch-2 3s infinite;
+  clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+}
+@keyframes glitch-1 {
+  0%, 90%, 100% { transform: translate(0); opacity: 0; }
+  92% { transform: translate(-2px, 1px); opacity: 1; }
+  94% { transform: translate(2px, -1px); opacity: 1; }
+  96% { transform: translate(-1px, 0); opacity: 0.8; }
+}
+@keyframes glitch-2 {
+  0%, 90%, 100% { transform: translate(0); opacity: 0; }
+  93% { transform: translate(2px, 2px); opacity: 1; }
+  95% { transform: translate(-2px, -1px); opacity: 1; }
+  97% { transform: translate(1px, 0); opacity: 0.8; }
+}
+.glitch:hover::before { animation-duration: 0.3s; }
+.glitch:hover::after { animation-duration: 0.3s; }
+
+/* ── NOISE TEXTURE ───────────────────────────────────────────── */
+.noise::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── CARD SYSTEM ─────────────────────────────────────────────── */
+.card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-raw);
+  border-left: 2px solid var(--accent-acid);
+  position: relative;
+  transition: border-left-width 80ms, box-shadow 80ms;
+}
+.card:hover {
+  border-left-width: 3px;
+  box-shadow: 0 0 20px rgba(200, 255, 0, 0.08);
+}
+
+/* ── TAG CHIPS ───────────────────────────────────────────────── */
+.tag-offer {
+  background: transparent;
+  border: 1px solid var(--accent-acid);
+  color: var(--accent-acid);
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.05em;
+}
+.tag-seek {
+  background: transparent;
+  border: 1px solid var(--accent-burn);
+  color: var(--accent-burn);
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.05em;
+}
+.tag-matched {
+  background: var(--accent-acid);
+  color: var(--bg-void);
+  font-family: 'Bebas Neue', sans-serif;
+}
+
+/* ── BLINK CURSOR ────────────────────────────────────────────── */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+.blink { animation: blink 1s step-end infinite; }
+
+/* ── RADAR GRID (hero bg) ────────────────────────────────────── */
+.radar-grid {
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(200,255,0,0.04) 39px, rgba(200,255,0,0.04) 40px),
+    repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(200,255,0,0.04) 39px, rgba(200,255,0,0.04) 40px);
+  animation: grid-shift 20s linear infinite;
+}
+@keyframes grid-shift {
+  0% { background-position: 0 0, 0 0; }
+  100% { background-position: 40px 40px, 40px 40px; }
+}
+
+/* ── SKELETON ────────────────────────────────────────────────── */
+@keyframes scanline-sweep {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bg-surface) 25%,
+    rgba(200,255,0,0.05) 50%,
+    var(--bg-surface) 75%
+  );
+  background-size: 200% 100%;
+  animation: scanline-sweep 1.8s infinite;
+}
+
+/* ── LINE CLAMP ──────────────────────────────────────────────── */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── TICKER TAPE ─────────────────────────────────────────────── */
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.ticker-inner {
+  animation: ticker 30s linear infinite;
+  display: inline-flex;
+  white-space: nowrap;
+}
+
+/* ── SLIDE IN ────────────────────────────────────────────────── */
+@keyframes slide-in-left {
+  from { transform: translateX(-12px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+@keyframes slide-in-right {
+  from { transform: translateX(12px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+.slide-in-left { animation: slide-in-left 0.15s ease-out; }
+.slide-in-right { animation: slide-in-right 0.15s ease-out; }
+
+/* ── ONLINE INDICATOR ────────────────────────────────────────── */
+@keyframes pulse-acid {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+.online-dot { animation: pulse-acid 1.5s ease-in-out infinite; }

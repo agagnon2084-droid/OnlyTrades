@@ -90,7 +90,6 @@ export default function DashboardPage() {
       });
       if (!res.ok) throw new Error("Action failed");
       toast.success(`Trade ${action}ed!`);
-      // Refresh
       const [inc, out] = await Promise.all([
         fetch("/api/trades?direction=received").then(r => r.json()),
         fetch("/api/trades?direction=sent").then(r => r.json()),
@@ -115,11 +114,11 @@ export default function DashboardPage() {
   if (status === "loading") return null;
 
   const tabs: { id: Tab; label: string; count?: number }[] = [
-    { id: "posts", label: "My Posts", count: posts.length },
-    { id: "incoming", label: "Incoming", count: incoming.filter(t => t.status === "PENDING").length },
-    { id: "outgoing", label: "Outgoing", count: outgoing.length },
-    { id: "matches", label: "My Matches", count: matches.length },
-    { id: "notifications", label: "Notifications", count: unreadCount || undefined },
+    { id: "posts", label: "MY POSTS", count: posts.length },
+    { id: "incoming", label: "INCOMING", count: incoming.filter(t => t.status === "PENDING").length },
+    { id: "outgoing", label: "OUTGOING", count: outgoing.length },
+    { id: "matches", label: "MATCHES", count: matches.length },
+    { id: "notifications", label: "ALERTS", count: unreadCount || undefined },
   ];
 
   const TradeCard = ({ trade, dir }: { trade: TradeRequest; dir: "incoming" | "outgoing" }) => {
@@ -134,31 +133,31 @@ export default function DashboardPage() {
           <div className="flex items-center gap-2">
             <Avatar src={other.avatar} name={other.name || "User"} size="sm" />
             <div>
-              <p className="text-sm font-medium text-[var(--foreground)]">{other.name}</p>
-              <p className="text-xs text-[var(--muted-foreground)]">{timeAgo(trade.createdAt)}</p>
+              <p className="text-sm font-mono font-medium text-[var(--text-primary)]">{other.name}</p>
+              <p className="text-[10px] font-mono text-[var(--text-dim)]">{timeAgo(trade.createdAt)}</p>
             </div>
           </div>
-          <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${statusInfo?.color ?? ""}`}>
-            {statusInfo?.label}
+          <span className={`text-[10px] font-mono tracking-widest px-2.5 py-1 border font-medium ${statusInfo?.color ?? "border-[var(--border-raw)] text-[var(--text-dim)]"}`}>
+            {statusInfo?.label?.toUpperCase()}
           </span>
         </div>
 
         <div className="flex items-center gap-3 text-sm">
-          <div className="flex-1 px-3 py-2 rounded-lg bg-[var(--muted)] text-center">
+          <div className="flex-1 px-3 py-2 bg-[var(--bg-elevated)] border border-[var(--border-raw)] text-center">
             <div className="text-lg">{cat?.icon}</div>
-            <p className="text-xs font-medium text-[var(--foreground)] line-clamp-1">{trade.offeredPost.title}</p>
-            <p className="text-xs text-[var(--muted-foreground)]">offered</p>
+            <p className="text-xs font-mono font-medium text-[var(--text-primary)] line-clamp-1">{trade.offeredPost.title}</p>
+            <p className="text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-widest">offered</p>
           </div>
-          <span className="text-[var(--muted-foreground)]">⇄</span>
-          <div className="flex-1 px-3 py-2 rounded-lg bg-[var(--muted)] text-center">
+          <span className="text-[var(--text-ghost)] font-mono">⇄</span>
+          <div className="flex-1 px-3 py-2 bg-[var(--bg-elevated)] border border-[var(--border-raw)] text-center">
             <div className="text-lg">{reqCat?.icon}</div>
-            <p className="text-xs font-medium text-[var(--foreground)] line-clamp-1">{trade.requestedPost.title}</p>
-            <p className="text-xs text-[var(--muted-foreground)]">requested</p>
+            <p className="text-xs font-mono font-medium text-[var(--text-primary)] line-clamp-1">{trade.requestedPost.title}</p>
+            <p className="text-[10px] font-mono text-[var(--text-dim)] uppercase tracking-widest">requested</p>
           </div>
         </div>
 
         {trade.message && (
-          <p className="text-xs text-[var(--muted-foreground)] italic border-l-2 border-[var(--border)] pl-3 line-clamp-2">
+          <p className="text-xs font-mono text-[var(--text-dim)] italic border-l-2 border-[var(--accent-acid)] pl-3 line-clamp-2">
             &ldquo;{trade.message}&rdquo;
           </p>
         )}
@@ -167,23 +166,23 @@ export default function DashboardPage() {
         <div className="flex gap-2 flex-wrap">
           {dir === "incoming" && trade.status === "PENDING" && (
             <>
-              <Button size="sm" onClick={() => handleTradeAction(trade.id, "accept")}>Accept</Button>
-              <Button size="sm" variant="outline" onClick={() => handleTradeAction(trade.id, "decline")}>Decline</Button>
+              <Button size="sm" onClick={() => handleTradeAction(trade.id, "accept")}>ACCEPT</Button>
+              <Button size="sm" variant="outline" onClick={() => handleTradeAction(trade.id, "decline")}>DECLINE</Button>
             </>
           )}
           {trade.status === "ACCEPTED" && (
             <Button size="sm" variant="secondary" onClick={() => handleTradeAction(trade.id, "complete")}>
-              Mark Complete
+              MARK COMPLETE
             </Button>
           )}
           {dir === "outgoing" && ["PENDING", "ACCEPTED"].includes(trade.status) && (
             <Button size="sm" variant="ghost" onClick={() => handleTradeAction(trade.id, "cancel")}>
-              Cancel
+              CANCEL
             </Button>
           )}
           {trade.status === "COMPLETED" && (
             <Link href={`/profile/${other.id}?review=${trade.id}`}>
-              <Button size="sm" variant="outline">Leave Review</Button>
+              <Button size="sm" variant="outline">LEAVE REVIEW</Button>
             </Link>
           )}
         </div>
@@ -196,31 +195,32 @@ export default function DashboardPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-[var(--foreground)]">Dashboard</h1>
-          <p className="text-[var(--muted-foreground)] text-sm mt-0.5">
-            Welcome back, {session?.user?.name?.split(" ")[0]}
+          <div className="text-[10px] font-mono tracking-widest text-[var(--accent-static)] mb-2">// CONTROL CENTER</div>
+          <h1 className="text-3xl font-display tracking-widest text-[var(--text-primary)]">DASHBOARD</h1>
+          <p className="text-xs font-mono text-[var(--text-dim)] mt-1">
+            Welcome back, {session?.user?.name?.split(" ")[0]?.toUpperCase()}
           </p>
         </div>
         <Link href="/post/new">
-          <Button>+ New Trade Post</Button>
+          <Button>+ NEW TRADE</Button>
         </Link>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 mb-6 overflow-x-auto pb-1 border-b border-[var(--border)]">
+      <div className="flex gap-0 mb-6 overflow-x-auto pb-0 border-b border-[var(--border-raw)]">
         {tabs.map((t) => (
           <button
             key={t.id}
             onClick={() => setTab(t.id)}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-t-lg text-sm font-medium whitespace-nowrap transition-all ${
+            className={`flex items-center gap-1.5 px-4 py-2 text-xs font-mono tracking-widest whitespace-nowrap transition-all duration-[80ms] border-b-2 ${
               tab === t.id
-                ? "bg-[var(--card)] text-[var(--foreground)] border border-b-0 border-[var(--border)] -mb-px"
-                : "text-[var(--muted-foreground)] hover:text-[var(--foreground)]"
+                ? "text-[var(--accent-acid)] border-b-[var(--accent-acid)]"
+                : "text-[var(--text-dim)] border-b-transparent hover:text-[var(--text-primary)]"
             }`}
           >
             {t.label}
             {t.count !== undefined && t.count > 0 && (
-              <span className={`text-xs px-1.5 py-0.5 rounded-full font-medium ${t.id === "notifications" ? "bg-red-500 text-white" : "bg-[var(--muted)] text-[var(--muted-foreground)]"}`}>
+              <span className={`text-[10px] px-1.5 py-0.5 font-mono ${t.id === "notifications" ? "bg-[var(--accent-burn)] text-[var(--bg-void)]" : "text-[var(--text-ghost)]"}`}>
                 {t.count}
               </span>
             )}
@@ -229,23 +229,35 @@ export default function DashboardPage() {
       </div>
 
       {loading ? (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {[1,2,3].map(i => <PostCardSkeleton key={i} />)}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[var(--border-raw)]">
+          {[1,2,3].map(i => (
+            <div key={i} className="bg-[var(--bg-void)]">
+              <PostCardSkeleton />
+            </div>
+          ))}
         </div>
       ) : (
         <>
           {/* My Posts */}
           {tab === "posts" && (
             posts.length === 0 ? (
-              <EmptyState
-                icon="📝"
-                title="No active posts yet"
-                description="Create your first trade post and start connecting with the community."
-                action={<Link href="/post/new"><Button>Post Your First Trade</Button></Link>}
-              />
+              <div className="flex flex-col items-center justify-center py-20 px-4 text-center">
+                <div className="text-sm font-mono tracking-widest text-[var(--text-dim)] mb-2">[ NO ACTIVE TRADES ]</div>
+                <p className="text-xs font-mono text-[var(--text-ghost)] max-w-sm mb-6 leading-relaxed">
+                  You haven&apos;t posted anything yet. The collective is waiting.
+                </p>
+                <div className="flex gap-3">
+                  <Link href="/post/new"><Button>+ POST YOUR FIRST TRADE</Button></Link>
+                  <Link href="/discover"><Button variant="outline">BROWSE WHAT&apos;S AVAILABLE →</Button></Link>
+                </div>
+              </div>
             ) : (
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {posts.map(p => <PostCard key={p.id} post={p} />)}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[var(--border-raw)]">
+                {posts.map(p => (
+                  <div key={p.id} className="bg-[var(--bg-void)]">
+                    <PostCard post={p} />
+                  </div>
+                ))}
               </div>
             )
           )}
@@ -253,9 +265,9 @@ export default function DashboardPage() {
           {/* Incoming */}
           {tab === "incoming" && (
             incoming.length === 0 ? (
-              <EmptyState icon="📬" title="No incoming requests" description="When others propose a trade for your posts, they'll appear here." />
+              <EmptyState icon="[ ]" title="No incoming requests" description="When others propose a trade for your posts, they'll appear here." />
             ) : (
-              <div className="grid sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {incoming.map(t => <TradeCard key={t.id} trade={t} dir="incoming" />)}
               </div>
             )
@@ -264,9 +276,9 @@ export default function DashboardPage() {
           {/* Outgoing */}
           {tab === "outgoing" && (
             outgoing.length === 0 ? (
-              <EmptyState icon="📤" title="No outgoing requests" description="Browse trades and propose a swap!" action={<Link href="/discover"><Button variant="outline">Browse Trades</Button></Link>} />
+              <EmptyState icon="[ ]" title="No outgoing requests" description="Browse trades and propose a swap!" action={<Link href="/discover"><Button variant="outline">BROWSE TRADES</Button></Link>} />
             ) : (
-              <div className="grid sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {outgoing.map(t => <TradeCard key={t.id} trade={t} dir="outgoing" />)}
               </div>
             )
@@ -275,14 +287,24 @@ export default function DashboardPage() {
           {/* Matches */}
           {tab === "matches" && (
             matches.length === 0 ? (
-              <EmptyState icon="🔍" title="No matches yet" description="Add seek keywords to your posts and we'll surface relevant trades here." action={<Link href="/post/new"><Button variant="outline">Create a Post with Keywords</Button></Link>} />
+              <div className="flex flex-col items-center justify-center py-20 px-4 text-center">
+                <div className="text-sm font-mono tracking-widest text-[var(--text-dim)] mb-2">[ NO MATCHES YET ]</div>
+                <p className="text-xs font-mono text-[var(--text-ghost)] max-w-sm mb-6 leading-relaxed">
+                  Add seek keywords to your posts to find traders who have what you want.
+                </p>
+                <Link href="/post/new"><Button variant="outline">UPDATE YOUR POSTS →</Button></Link>
+              </div>
             ) : (
               <div>
-                <p className="text-sm text-[var(--muted-foreground)] mb-4">
-                  Posts that match your active posts&apos; seek keywords:
+                <p className="text-xs font-mono text-[var(--text-dim)] mb-4 tracking-widest">
+                  // POSTS MATCHING YOUR ACTIVE SEEK KEYWORDS
                 </p>
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                  {matches.map(p => <PostCard key={p.id} post={p} matchScore={p.matchScore} mutual={p.mutual} />)}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[var(--border-raw)]">
+                  {matches.map(p => (
+                    <div key={p.id} className="bg-[var(--bg-void)]">
+                      <PostCard post={p} matchScore={p.matchScore} mutual={p.mutual} />
+                    </div>
+                  ))}
                 </div>
               </div>
             )
@@ -293,26 +315,26 @@ export default function DashboardPage() {
             <div>
               {notifications.length > 0 && unreadCount > 0 && (
                 <div className="flex justify-end mb-4">
-                  <Button variant="ghost" size="sm" onClick={markAllRead}>Mark all read</Button>
+                  <Button variant="ghost" size="sm" onClick={markAllRead}>MARK ALL READ</Button>
                 </div>
               )}
               {notifications.length === 0 ? (
-                <EmptyState icon="🔔" title="No notifications" description="You're all caught up!" />
+                <EmptyState icon="[ ]" title="No notifications" description="You're all caught up." />
               ) : (
                 <div className="flex flex-col gap-2">
                   {notifications.map(n => (
                     <div
                       key={n.id}
-                      className={`card p-4 flex items-start gap-3 ${!n.read ? "border-[var(--primary)]/30 bg-[var(--earth-50,#faf7f2)]" : ""}`}
+                      className={`card p-4 flex items-start gap-3 ${!n.read ? "bg-[var(--bg-elevated)]" : ""}`}
                     >
-                      <div className="w-2 h-2 rounded-full mt-1.5 flex-shrink-0" style={{ background: n.read ? "transparent" : "var(--primary)" }} />
+                      <div className="w-2 h-2 mt-1.5 flex-shrink-0" style={{ background: n.read ? "transparent" : "var(--accent-acid)" }} />
                       <div className="flex-1">
-                        <p className="text-sm text-[var(--foreground)]">{n.message}</p>
-                        <p className="text-xs text-[var(--muted-foreground)] mt-0.5">{timeAgo(n.createdAt)}</p>
+                        <p className="text-sm font-mono text-[var(--text-primary)]">{n.message}</p>
+                        <p className="text-[10px] font-mono text-[var(--text-dim)] mt-0.5">{timeAgo(n.createdAt)}</p>
                       </div>
                       {n.linkTo && (
-                        <Link href={n.linkTo} className="text-xs text-[var(--primary)] hover:underline flex-shrink-0">
-                          View →
+                        <Link href={n.linkTo} className="text-xs font-mono text-[var(--accent-acid)] hover:text-[var(--text-primary)] transition-colors flex-shrink-0">
+                          VIEW →
                         </Link>
                       )}
                     </div>

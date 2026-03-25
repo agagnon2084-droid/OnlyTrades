@@ -16,10 +16,10 @@ export default function ForgotPasswordPage() {
 
   if (submitted) {
     return (
-      <div className="card p-8 shadow-lg text-center">
+      <div className="card p-8 text-center">
         <div className="text-5xl mb-4">📬</div>
-        <h1 className="text-2xl font-bold text-[var(--foreground)] mb-2">Check your email</h1>
-        <p className="text-sm text-[var(--muted-foreground)] mb-6">
+        <h1 className="text-2xl font-bold font-display tracking-widest uppercase text-[var(--text-primary)] mb-2">Check your email</h1>
+        <p className="text-sm text-[var(--text-dim)] mb-6">
           If an account exists for <strong>{email}</strong>, you&apos;ll receive a password reset link shortly.
         </p>
         <Link href="/login">
@@ -30,9 +30,9 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="card p-8 shadow-lg">
-      <h1 className="text-2xl font-bold text-[var(--foreground)] mb-1">Forgot password?</h1>
-      <p className="text-sm text-[var(--muted-foreground)] mb-6">
+    <div className="card p-8">
+      <h1 className="text-2xl font-bold font-display tracking-widest uppercase text-[var(--text-primary)] mb-1">Forgot password?</h1>
+      <p className="text-sm text-[var(--text-dim)] mb-6">
         Enter your email and we&apos;ll send you a reset link.
       </p>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -48,9 +48,9 @@ export default function ForgotPasswordPage() {
           Send Reset Link
         </Button>
       </form>
-      <p className="text-center text-sm text-[var(--muted-foreground)] mt-6">
+      <p className="text-center text-sm text-[var(--text-dim)] mt-6">
         Remember your password?{" "}
-        <Link href="/login" className="text-[var(--primary)] font-medium hover:underline">
+        <Link href="/login" className="text-[var(--accent-acid)] font-medium hover:underline">
           Sign in
         </Link>
       </p>

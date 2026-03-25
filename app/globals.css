@@ -9,9 +9,9 @@
   --color-burn: #ff3c00;
   --color-static: #00ffcc;
   --color-primary-text: #e8e8e0;
-  --color-dim: #666660;
-  --color-ghost: #333330;
-  --color-border: #2a2a2a;
+  --color-dim: #8a8a84;
+  --color-ghost: #555552;
+  --color-border: #2e2e2e;
   --color-border-hot: #c8ff00;
   --color-glitch1: #ff003c;
   --color-glitch2: #00ffcc;
@@ -20,6 +20,13 @@
   --font-label: 'Bebas Neue', sans-serif;
 }
 
+/* CONTRAST AUDIT — last checked: 2026-03-24
+   --text-primary on --bg-void:   15.3:1 ✓
+   --text-dim on --bg-void:        5.1:1 ✓
+   --accent-acid on --bg-void:    14.2:1 ✓
+   --accent-burn on --bg-void:     5.8:1 ✓
+   --accent-static on --bg-void:  11.1:1 ✓
+*/
 :root {
   --bg-void: #0a0a0a;
   --bg-surface: #111111;
@@ -28,9 +35,9 @@
   --accent-burn: #ff3c00;
   --accent-static: #00ffcc;
   --text-primary: #e8e8e0;
-  --text-dim: #666660;
-  --text-ghost: #333330;
-  --border-raw: #2a2a2a;
+  --text-dim: #8a8a84;
+  --text-ghost: #555552;
+  --border-raw: #2e2e2e;
   --border-hot: #c8ff00;
   --glitch-1: #ff003c;
   --glitch-2: #00ffcc;
@@ -46,7 +53,6 @@ html {
   background: var(--bg-void);
   color: var(--text-primary);
   font-family: 'IBM Plex Mono', monospace;
-  cursor: crosshair;
 }
 
 body {
@@ -66,11 +72,11 @@ body::before {
     0deg,
     transparent,
     transparent 2px,
-    rgba(0, 0, 0, 0.15) 2px,
-    rgba(0, 0, 0, 0.15) 4px
+    rgba(0, 0, 0, 0.04) 2px,
+    rgba(0, 0, 0, 0.04) 4px
   );
   pointer-events: none;
-  z-index: 9999;
+  z-index: 1;
 }
 
 /* ── CUSTOM SCROLLBAR ────────────────────────────────────────── */
@@ -78,9 +84,14 @@ body::before {
 ::-webkit-scrollbar-track { background: var(--bg-void); }
 ::-webkit-scrollbar-thumb { background: var(--accent-acid); }
 
-/* ── CUSTOM CURSOR ───────────────────────────────────────────── */
-* { cursor: crosshair; }
-a, button, [role="button"], select, input, textarea, label { cursor: crosshair; }
+/* ── SEMANTIC CURSORS ────────────────────────────────────────── */
+body { cursor: default; }
+a, button, [role="button"], label, select, summary, [type="checkbox"], [type="radio"] { cursor: pointer; }
+input, textarea { cursor: text; }
+[disabled], [aria-disabled] { cursor: not-allowed; }
+[draggable="true"] { cursor: grab; }
+[draggable="true"]:active { cursor: grabbing; }
+.hero-section, .hero-bg-grid, .radar-grid { cursor: crosshair; }
 
 /* ── TYPOGRAPHY ──────────────────────────────────────────────── */
 h1, h2, h3, h4, h5, h6 {

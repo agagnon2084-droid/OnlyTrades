@@ -67,9 +67,9 @@ export default function ProposeTradeButton({ requestedPostId, requestedPostTitle
 
       <Modal open={open} onClose={() => setOpen(false)} title="Propose a Trade" size="lg">
         <div className="flex flex-col gap-5">
-          <div className="px-3 py-2.5 rounded-xl bg-[var(--muted)] text-sm text-[var(--muted-foreground)]">
+          <div className="px-3 py-2.5 bg-[var(--bg-elevated)] text-sm text-[var(--text-dim)]">
             You&apos;re offering one of your posts in exchange for:{" "}
-            <strong className="text-[var(--foreground)]">{requestedPostTitle}</strong>
+            <strong className="text-[var(--text-primary)]">{requestedPostTitle}</strong>
           </div>
 
           {loading ? (
@@ -90,7 +90,7 @@ export default function ProposeTradeButton({ requestedPostId, requestedPostTitle
             />
           ) : (
             <div>
-              <p className="text-sm font-medium text-[var(--foreground)] mb-3">
+              <p className="text-sm font-medium text-[var(--text-primary)] mb-3">
                 Select which of your posts to offer:
               </p>
               <div className="grid grid-cols-2 gap-3 max-h-64 overflow-y-auto pr-1">
@@ -101,14 +101,14 @@ export default function ProposeTradeButton({ requestedPostId, requestedPostTitle
                       key={post.id}
                       type="button"
                       onClick={() => setSelected(post.id)}
-                      className={`text-left p-3 rounded-xl border-2 transition-all ${
+                      className={`text-left p-3 border-2 transition-all ${
                         selected === post.id
-                          ? "border-[var(--primary)] bg-[var(--earth-50,#faf7f2)]"
-                          : "border-[var(--border)] hover:border-[var(--primary)]/50"
+                          ? "border-[var(--accent-acid)] bg-[var(--bg-elevated)]"
+                          : "border-[var(--border-raw)] hover:border-[var(--accent-acid)]/50"
                       }`}
                     >
                       <div className="text-lg mb-1">{cat?.icon ?? "📦"}</div>
-                      <p className="text-xs font-medium text-[var(--foreground)] line-clamp-2">
+                      <p className="text-xs font-medium text-[var(--text-primary)] line-clamp-2">
                         {post.title}
                       </p>
                     </button>
@@ -119,7 +119,7 @@ export default function ProposeTradeButton({ requestedPostId, requestedPostTitle
           )}
 
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-[var(--foreground)]">
+            <label className="text-sm font-medium text-[var(--text-primary)]">
               Message (optional)
             </label>
             <textarea
@@ -127,11 +127,11 @@ export default function ProposeTradeButton({ requestedPostId, requestedPostTitle
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Introduce yourself and explain why this is a great trade..."
               rows={3}
-              className="w-full px-3 py-2 rounded-xl border border-[var(--border)] bg-[var(--card)] text-[var(--foreground)] text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[var(--ring)]"
+              className="w-full px-3 py-2 border border-[var(--border-raw)] bg-[var(--bg-surface)] text-[var(--text-primary)] text-sm resize-none focus:outline-none focus:border-[var(--accent-acid)]"
             />
           </div>
 
-          <div className="flex gap-3 justify-end pt-2 border-t border-[var(--border)]">
+          <div className="flex gap-3 justify-end pt-2 border-t border-[var(--border-raw)]">
             <Button variant="ghost" onClick={() => setOpen(false)}>Cancel</Button>
             <Button
               onClick={handleSubmit}

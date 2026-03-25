@@ -81,14 +81,14 @@ export default function SettingsPage() {
   return (
     <div className="max-w-2xl mx-auto px-4 py-10">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-[var(--foreground)] mb-1">Settings</h1>
-        <p className="text-[var(--muted-foreground)] text-sm">Manage your profile and account settings.</p>
+        <h1 className="text-3xl font-bold font-display tracking-widest uppercase text-[var(--text-primary)] mb-1">Settings</h1>
+        <p className="text-[var(--text-dim)] text-sm">Manage your profile and account settings.</p>
       </div>
 
       {/* Profile */}
       <form onSubmit={handleSaveProfile} className="flex flex-col gap-6 mb-8">
         <div className="card p-6 flex flex-col gap-5">
-          <h2 className="font-semibold text-[var(--foreground)]">Profile</h2>
+          <h2 className="font-semibold font-display tracking-widest uppercase text-[var(--text-primary)]">Profile</h2>
 
           {/* Avatar preview */}
           <div className="flex items-center gap-4">
@@ -133,7 +133,7 @@ export default function SettingsPage() {
       {/* Password */}
       <form onSubmit={handleChangePassword} className="flex flex-col gap-6">
         <div className="card p-6 flex flex-col gap-5">
-          <h2 className="font-semibold text-[var(--foreground)]">Change Password</h2>
+          <h2 className="font-semibold font-display tracking-widest uppercase text-[var(--text-primary)]">Change Password</h2>
           <Input
             label="Current Password"
             type="password"
@@ -165,8 +165,8 @@ export default function SettingsPage() {
       {/* Danger zone */}
       <div className="card p-6 mt-6 border-red-200 dark:border-red-900">
         <h2 className="font-semibold text-red-600 mb-2">Account</h2>
-        <p className="text-sm text-[var(--muted-foreground)] mb-4">
-          Your account email: <strong className="text-[var(--foreground)]">{session?.user?.email}</strong>
+        <p className="text-sm text-[var(--text-dim)] mb-4">
+          Your account email: <strong className="text-[var(--text-primary)]">{session?.user?.email}</strong>
         </p>
       </div>
     </div>

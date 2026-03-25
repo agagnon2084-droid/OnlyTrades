@@ -66,33 +66,33 @@ export default async function ProfilePage({
         <div className="flex flex-col gap-5">
           <div className="card p-6 text-center">
             <Avatar src={user.avatar} name={user.name || "User"} size="xl" className="mx-auto mb-4" />
-            <h1 className="text-2xl font-bold text-[var(--foreground)]">{user.name}</h1>
+            <h1 className="text-2xl font-bold text-[var(--text-primary)]">{user.name}</h1>
             {user.location && (
-              <p className="text-sm text-[var(--muted-foreground)] mt-1">📍 {user.location}</p>
+              <p className="text-sm text-[var(--text-dim)] mt-1">📍 {user.location}</p>
             )}
             <div className="flex justify-center mt-3">
               <StarRating value={user.rating} size="md" />
             </div>
-            <p className="text-lg font-bold text-[var(--foreground)] mt-1">
+            <p className="text-lg font-bold text-[var(--text-primary)] mt-1">
               {user.rating > 0 ? user.rating.toFixed(1) : "No ratings yet"}
             </p>
-            <div className="flex justify-around mt-4 pt-4 border-t border-[var(--border)]">
+            <div className="flex justify-around mt-4 pt-4 border-t border-[var(--border-raw)]">
               <div>
-                <div className="text-2xl font-bold text-[var(--foreground)]">{user.tradeCount}</div>
-                <div className="text-xs text-[var(--muted-foreground)]">Trades</div>
+                <div className="text-2xl font-bold text-[var(--text-primary)]">{user.tradeCount}</div>
+                <div className="text-xs text-[var(--text-dim)]">Trades</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-[var(--foreground)]">{user.posts.length}</div>
-                <div className="text-xs text-[var(--muted-foreground)]">Active Posts</div>
+                <div className="text-2xl font-bold text-[var(--text-primary)]">{user.posts.length}</div>
+                <div className="text-xs text-[var(--text-dim)]">Active Posts</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-[var(--foreground)]">{user.receivedReviews.length}</div>
-                <div className="text-xs text-[var(--muted-foreground)]">Reviews</div>
+                <div className="text-2xl font-bold text-[var(--text-primary)]">{user.receivedReviews.length}</div>
+                <div className="text-xs text-[var(--text-dim)]">Reviews</div>
               </div>
             </div>
             {isOwnProfile && (
               <Link href="/settings" className="block mt-4">
-                <button className="w-full text-sm px-4 py-2 rounded-xl border border-[var(--border)] text-[var(--muted-foreground)] hover:bg-[var(--muted)] transition-colors">
+                <button className="w-full text-sm px-4 py-2 border border-[var(--border-raw)] text-[var(--text-dim)] hover:bg-[var(--bg-elevated)] transition-colors">
                   Edit Profile
                 </button>
               </Link>
@@ -101,13 +101,13 @@ export default async function ProfilePage({
 
           {user.bio && (
             <div className="card p-5">
-              <h3 className="font-semibold text-[var(--foreground)] mb-2">About</h3>
-              <p className="text-sm text-[var(--muted-foreground)] leading-relaxed">{user.bio}</p>
+              <h3 className="font-semibold text-[var(--text-primary)] mb-2">About</h3>
+              <p className="text-sm text-[var(--text-dim)] leading-relaxed">{user.bio}</p>
             </div>
           )}
 
           <div className="card p-5">
-            <p className="text-xs text-[var(--muted-foreground)]">
+            <p className="text-xs text-[var(--text-dim)]">
               Member since {formatDate(user.createdAt)}
             </p>
           </div>
@@ -117,20 +117,20 @@ export default async function ProfilePage({
         <div className="lg:col-span-2 flex flex-col gap-8">
           {/* Active posts */}
           <div>
-            <h2 className="text-xl font-bold text-[var(--foreground)] mb-4">
+            <h2 className="text-xl font-bold font-display tracking-widest uppercase text-[var(--text-primary)] mb-4">
               Active Trades
               {user.posts.length > 0 && (
-                <span className="ml-2 text-sm font-normal text-[var(--muted-foreground)]">
+                <span className="ml-2 text-sm font-normal text-[var(--text-dim)]">
                   ({user.posts.length})
                 </span>
               )}
             </h2>
             {user.posts.length === 0 ? (
-              <div className="card p-8 text-center text-[var(--muted-foreground)] text-sm">
+              <div className="card p-8 text-center text-[var(--text-dim)] text-sm">
                 {isOwnProfile ? (
                   <span>
                     You have no active posts.{" "}
-                    <Link href="/post/new" className="text-[var(--primary)] hover:underline">
+                    <Link href="/post/new" className="text-[var(--accent-acid)] hover:underline">
                       Create one!
                     </Link>
                   </span>
@@ -147,16 +147,16 @@ export default async function ProfilePage({
 
           {/* Reviews */}
           <div>
-            <h2 className="text-xl font-bold text-[var(--foreground)] mb-4">
+            <h2 className="text-xl font-bold font-display tracking-widest uppercase text-[var(--text-primary)] mb-4">
               Reviews
               {user.receivedReviews.length > 0 && (
-                <span className="ml-2 text-sm font-normal text-[var(--muted-foreground)]">
+                <span className="ml-2 text-sm font-normal text-[var(--text-dim)]">
                   ({user.receivedReviews.length})
                 </span>
               )}
             </h2>
             {user.receivedReviews.length === 0 ? (
-              <div className="card p-8 text-center text-[var(--muted-foreground)] text-sm">
+              <div className="card p-8 text-center text-[var(--text-dim)] text-sm">
                 No reviews yet.
               </div>
             ) : (
@@ -167,14 +167,14 @@ export default async function ProfilePage({
                       <div className="flex items-center gap-3">
                         <Avatar src={review.reviewer.avatar} name={review.reviewer.name || "User"} size="sm" />
                         <div>
-                          <p className="text-sm font-medium text-[var(--foreground)]">{review.reviewer.name}</p>
-                          <p className="text-xs text-[var(--muted-foreground)]">{timeAgo(review.createdAt)}</p>
+                          <p className="text-sm font-medium text-[var(--text-primary)]">{review.reviewer.name}</p>
+                          <p className="text-xs text-[var(--text-dim)]">{timeAgo(review.createdAt)}</p>
                         </div>
                       </div>
                       <StarRating value={review.rating} size="sm" />
                     </div>
                     {review.comment && (
-                      <p className="text-sm text-[var(--muted-foreground)] mt-3 leading-relaxed">
+                      <p className="text-sm text-[var(--text-dim)] mt-3 leading-relaxed">
                         &ldquo;{review.comment}&rdquo;
                       </p>
                     )}

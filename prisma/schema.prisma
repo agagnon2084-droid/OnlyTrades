@@ -93,6 +93,7 @@ model User {
   isVerified    Boolean   @default(false)
   isPrivate     Boolean   @default(false)
   lastActiveAt  DateTime?
+  hasCompletedOnboarding Boolean @default(false)
 
   accounts         Account[]
   sessions         Session[]
@@ -106,6 +107,7 @@ model User {
   followers        Follow[]                @relation("Following")
   conversations    ConversationParticipant[]
   sentMessages     Message[]
+  badges           UserBadge[]
 }
 
 model Account {
@@ -278,4 +280,25 @@ model Message {
 
   @@index([conversationId])
   @@index([senderId])
+}
+
+enum BadgeType {
+  EMAIL_VERIFIED
+  PROFILE_COMPLETE
+  FIRST_TRADE
+  TRUSTED_TRADER
+  VETERAN
+  FAST_RESPONDER
+}
+
+model UserBadge {
+  id        String    @id @default(cuid())
+  userId    String
+  type      BadgeType
+  earnedAt  DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, type])
+  @@index([userId])
 }

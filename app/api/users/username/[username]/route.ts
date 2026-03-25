@@ -26,6 +26,9 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ user
           take: 20,
           include: { reviewer: { select: { id: true, name: true, avatar: true, username: true } } },
         },
+        badges: {
+          orderBy: { earnedAt: "asc" },
+        },
       },
     });
 

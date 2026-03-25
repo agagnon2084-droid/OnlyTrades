@@ -26,47 +26,55 @@ async function getStats() {
 export default async function HomePage() {
   const [posts, stats] = await Promise.all([getRecentPosts(), getStats()]);
 
-  const tickerItems = [
-    `${stats.postCount} ACTIVE TRADES`,
-    `${stats.userCount} MEMBERS`,
-    `${stats.tradeCount} COMPLETED DEALS`,
-    "NO MONEY CHANGES HANDS",
-    "PEER TO PEER",
-    "ANTI-CORPORATE",
-    "TRADE EVERYTHING",
-  ];
+  const THRESHOLDS = { activeListings: 50, completedTrades: 25, members: 100 };
+  const allBelowThreshold =
+    stats.postCount < THRESHOLDS.activeListings &&
+    stats.tradeCount < THRESHOLDS.completedTrades &&
+    stats.userCount < THRESHOLDS.members;
+
+  const tickerItems: string[] = allBelowThreshold
+    ? ["EARLY ACCESS — BE AMONG THE FIRST TO TRADE", "NO MONEY CHANGES HANDS", "PEER TO PEER", "ANTI-CORPORATE", "TRADE EVERYTHING"]
+    : [
+        ...(stats.postCount >= THRESHOLDS.activeListings ? [`${stats.postCount} ACTIVE TRADES`] : []),
+        ...(stats.userCount >= THRESHOLDS.members ? [`${stats.userCount} MEMBERS`] : []),
+        ...(stats.tradeCount >= THRESHOLDS.completedTrades ? [`${stats.tradeCount} COMPLETED DEALS`] : []),
+        "NO MONEY CHANGES HANDS",
+        "PEER TO PEER",
+        "ANTI-CORPORATE",
+        "TRADE EVERYTHING",
+      ];
 
   return (
     <main className="flex flex-col">
       {/* ── HERO ──────────────────────────────────────────────── */}
-      <section className="relative min-h-[85vh] flex flex-col items-center justify-center radar-grid overflow-hidden border-b border-[var(--border-raw)]">
+      <section className="hero-section relative min-h-[60vh] md:min-h-[75vh] lg:min-h-[85vh] flex flex-col items-center justify-center radar-grid overflow-hidden border-b border-[var(--border-raw)]">
         <div className="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-[var(--bg-void)]" />
-        <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
+        <div className="relative z-10 text-center px-4 py-12 md:px-6 md:py-20 max-w-5xl mx-auto">
           <div className="mb-6 inline-flex items-center gap-3 text-[10px] font-mono tracking-widest text-[var(--text-ghost)] border border-[var(--border-raw)] px-4 py-2">
             <span className="text-[var(--accent-acid)] online-dot">◉</span>
             SYSTEM ONLINE // {stats.postCount} ACTIVE TRADES // {stats.userCount} MEMBERS
           </div>
 
           <h1
-            className="glitch text-6xl md:text-8xl font-display font-black tracking-tight text-[var(--text-primary)] leading-none mb-4"
+            className="glitch text-4xl sm:text-5xl lg:text-7xl xl:text-8xl font-display font-black tracking-tight text-[var(--text-primary)] leading-none mb-4"
             data-text="TRADE EVERYTHING."
           >
             TRADE EVERYTHING.
           </h1>
-          <h2 className="text-4xl md:text-6xl font-display font-black tracking-tight text-[var(--accent-acid)] leading-none mb-8">
+          <h2 className="text-2xl sm:text-4xl md:text-6xl font-display font-black tracking-tight text-[var(--accent-acid)] leading-none mb-8">
             OWE NOTHING.
           </h2>
 
-          <p className="text-sm font-mono text-[var(--text-dim)] max-w-xl mx-auto mb-10 leading-loose">
-            Underground peer-to-peer barter economy. Skills, items, experiences, expertise.<br />
+          <p className="text-sm md:text-base font-mono text-[var(--text-dim)] max-w-full md:max-w-xl mx-auto mb-10 leading-loose">
+            Underground peer-to-peer barter economy. Skills, items, experiences, expertise.<br className="hidden md:inline" />
             No money. No fees. No middlemen. Ever.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/signup" className="px-8 py-3 text-sm font-mono tracking-widest border border-[var(--accent-acid)] text-[var(--accent-acid)] hover:bg-[var(--accent-acid)] hover:text-[var(--bg-void)] transition-all duration-[80ms] uppercase">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+            <Link href="/signup" className="w-full sm:w-auto text-center px-8 py-3 text-sm font-mono tracking-widest border border-[var(--accent-acid)] text-[var(--accent-acid)] hover:bg-[var(--accent-acid)] hover:text-[var(--bg-void)] transition-all duration-[80ms] uppercase">
               JOIN THE COLLECTIVE
             </Link>
-            <Link href="/discover" className="px-8 py-3 text-sm font-mono tracking-widest border border-[var(--border-raw)] text-[var(--text-dim)] hover:border-[var(--accent-acid)] hover:text-[var(--accent-acid)] transition-all duration-[80ms] uppercase">
+            <Link href="/discover" className="w-full sm:w-auto text-center px-8 py-3 text-sm font-mono tracking-widest border border-[var(--border-raw)] text-[var(--text-dim)] hover:border-[var(--accent-acid)] hover:text-[var(--accent-acid)] transition-all duration-[80ms] uppercase">
               BROWSE TRADES
             </Link>
           </div>

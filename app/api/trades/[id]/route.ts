@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { checkAndAwardTradebadges } from "@/lib/badges";
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -74,6 +75,11 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
         where: { id: { in: [trade.fromUserId, trade.toUserId] } },
         data: { tradeCount: { increment: 1 } },
       });
+      // Award trade badges
+      await Promise.all([
+        checkAndAwardTradebadges(trade.fromUserId),
+        checkAndAwardTradebadges(trade.toUserId),
+      ]);
     } else {
       return NextResponse.json({ error: "Invalid action" }, { status: 400 });
     }

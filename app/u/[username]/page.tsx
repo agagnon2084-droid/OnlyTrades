@@ -9,6 +9,7 @@ import StarRating from "@/components/ui/StarRating";
 import PostCard from "@/components/PostCard";
 import Badge from "@/components/ui/Badge";
 import { timeAgo, formatDate } from "@/lib/utils";
+import { getBadgeMeta } from "@/lib/badges";
 import FollowButton from "./FollowButton";
 import MessageButton from "./MessageButton";
 
@@ -35,7 +36,7 @@ export default async function UserProfilePage({ params }: { params: Promise<{ us
   return (
     <div className="max-w-6xl mx-auto px-4 py-0">
       {/* ── BANNER ── */}
-      <div className="relative h-48 border-b border-[var(--border-raw)] overflow-hidden">
+      <div className="relative h-40 md:h-56 lg:h-72 border-b border-[var(--border-raw)] overflow-hidden">
         {user.bannerUrl ? (
           <Image src={user.bannerUrl} alt="Banner" fill className="object-cover opacity-60" />
         ) : (
@@ -60,6 +61,14 @@ export default async function UserProfilePage({ params }: { params: Promise<{ us
             </h1>
             {user.isVerified && <span className="text-[10px] font-mono text-[var(--accent-acid)] border border-[var(--accent-acid)] px-2 py-0.5">VERIFIED</span>}
             {isOnline && <span className="text-[10px] font-mono text-[var(--accent-acid)] flex items-center gap-1"><span className="online-dot">◉</span> ONLINE</span>}
+            {user.badges?.map((badge: { id: string; type: string }) => {
+              const meta = getBadgeMeta(badge.type as Parameters<typeof getBadgeMeta>[0]);
+              return meta ? (
+                <span key={badge.id} className="text-[10px] font-mono border px-2 py-0.5" style={{ color: meta.color, borderColor: meta.color }} title={meta.description}>
+                  [{meta.icon} {meta.label}]
+                </span>
+              ) : null;
+            })}
           </div>
           <div className="flex items-center gap-3 mt-1 flex-wrap">
             <span className="text-sm font-mono text-[var(--accent-static)]">@{user.username}</span>
@@ -135,6 +144,26 @@ export default async function UserProfilePage({ params }: { params: Promise<{ us
             <div className="p-6">
               <div className="text-[10px] font-mono tracking-widest text-[var(--accent-static)] mb-2">// TRADE STYLE</div>
               <p className="text-xs font-mono text-[var(--text-dim)]">{user.tradeStyle}</p>
+            </div>
+          )}
+
+          {/* Badges */}
+          {user.badges?.length > 0 && (
+            <div className="p-6">
+              <div className="text-[10px] font-mono tracking-widest text-[var(--accent-static)] mb-3">// BADGES</div>
+              <div className="flex flex-col gap-2">
+                {user.badges.map((badge: { id: string; type: string; earnedAt: string }) => {
+                  const meta = getBadgeMeta(badge.type as Parameters<typeof getBadgeMeta>[0]);
+                  return meta ? (
+                    <div key={badge.id} className="flex items-center gap-2">
+                      <span className="text-xs font-mono border px-2 py-0.5" style={{ color: meta.color, borderColor: meta.color }}>
+                        {meta.icon} {meta.label}
+                      </span>
+                      <span className="text-[10px] font-mono text-[var(--text-ghost)]">{meta.description}</span>
+                    </div>
+                  ) : null;
+                })}
+              </div>
             </div>
           )}
 

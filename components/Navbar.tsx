@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
 import Avatar from "@/components/ui/Avatar";
+import MobileNav from "@/components/MobileNav";
 
 export default function Navbar() {
   const { data: session } = useSession();
@@ -45,6 +46,9 @@ export default function Navbar() {
               </Link>
             ))}
           </div>
+
+          {/* Mobile Nav */}
+          <MobileNav session={session} unread={unread} />
 
           {/* Auth */}
           <div className="flex items-center gap-2">

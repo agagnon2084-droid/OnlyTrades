@@ -43,12 +43,12 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="card p-8 shadow-lg">
-      <h1 className="text-2xl font-bold text-[var(--foreground)] mb-1">Welcome back</h1>
-      <p className="text-sm text-[var(--muted-foreground)] mb-6">Sign in to your account</p>
+    <div className="card p-8">
+      <h1 className="text-2xl font-bold font-display tracking-widest uppercase text-[var(--text-primary)] mb-1">Welcome back</h1>
+      <p className="text-sm text-[var(--text-dim)] mb-6">Sign in to your account</p>
 
       {errors.general && (
-        <div className="mb-4 px-4 py-3 rounded-xl bg-red-50 border border-red-200 text-sm text-red-700">
+        <div className="mb-4 px-4 py-3 bg-red-50 border border-red-200 text-sm text-red-700">
           {errors.general}
         </div>
       )}
@@ -74,7 +74,7 @@ export default function LoginPage() {
             required
           />
           <div className="text-right">
-            <Link href="/forgot-password" className="text-xs text-[var(--primary)] hover:underline">
+            <Link href="/forgot-password" className="text-xs text-[var(--accent-acid)] hover:underline">
               Forgot password?
             </Link>
           </div>
@@ -85,9 +85,9 @@ export default function LoginPage() {
       </form>
 
       <div className="flex items-center gap-3 my-5">
-        <div className="flex-1 h-px bg-[var(--border)]" />
-        <span className="text-xs text-[var(--muted-foreground)]">or</span>
-        <div className="flex-1 h-px bg-[var(--border)]" />
+        <div className="flex-1 h-px bg-[var(--border-raw)]" />
+        <span className="text-xs text-[var(--text-dim)]">or</span>
+        <div className="flex-1 h-px bg-[var(--border-raw)]" />
       </div>
 
       <Button
@@ -107,9 +107,9 @@ export default function LoginPage() {
         Continue with Google
       </Button>
 
-      <p className="text-center text-sm text-[var(--muted-foreground)] mt-6">
+      <p className="text-center text-sm text-[var(--text-dim)] mt-6">
         Don&apos;t have an account?{" "}
-        <Link href="/signup" className="text-[var(--primary)] font-medium hover:underline">
+        <Link href="/signup" className="text-[var(--accent-acid)] font-medium hover:underline">
           Sign up
         </Link>
       </p>

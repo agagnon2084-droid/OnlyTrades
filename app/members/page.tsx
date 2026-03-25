@@ -75,13 +75,13 @@ function MembersContent() {
       </div>
 
       {loading ? (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[var(--border-raw)]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-px bg-[var(--border-raw)]">
           {Array.from({ length: 6 }).map((_, i) => <PostCardSkeleton key={i} />)}
         </div>
       ) : members.length === 0 ? (
         <div className="py-20 text-center text-xs font-mono text-[var(--text-ghost)]">// NO MEMBERS FOUND</div>
       ) : (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[var(--border-raw)]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-px bg-[var(--border-raw)]">
           {members.map(member => (
             <Link
               key={member.id}

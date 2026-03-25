@@ -97,8 +97,8 @@ export default function NewPostPage() {
   return (
     <div className="max-w-2xl mx-auto px-4 py-10">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-[var(--foreground)] mb-1">Post a Trade</h1>
-        <p className="text-[var(--muted-foreground)] text-sm">
+        <h1 className="text-3xl font-bold font-display tracking-widest uppercase text-[var(--text-primary)] mb-1">Post a Trade</h1>
+        <p className="text-[var(--text-dim)] text-sm">
           Describe what you&apos;re offering and what you&apos;d like in return.
         </p>
       </div>
@@ -106,7 +106,7 @@ export default function NewPostPage() {
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         {/* Basic info */}
         <div className="card p-6 flex flex-col gap-5">
-          <h2 className="font-semibold text-[var(--foreground)]">Basic Info</h2>
+          <h2 className="font-semibold font-display tracking-widest uppercase text-[var(--text-primary)]">Basic Info</h2>
           <Input
             label="Title"
             placeholder="What are you trading? (e.g. 'Guitar lessons for website design')"
@@ -124,11 +124,11 @@ export default function NewPostPage() {
           />
           <div className="grid grid-cols-2 gap-4">
             <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-[var(--foreground)]">Category</label>
+              <label className="text-sm font-medium text-[var(--text-primary)]">Category</label>
               <select
                 value={form.category}
                 onChange={(e) => setForm({ ...form, category: e.target.value })}
-                className={`w-full px-3 py-2 rounded-xl border bg-[var(--card)] text-[var(--foreground)] text-sm appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent ${errors.category ? "border-red-500" : "border-[var(--border)]"}`}
+                className={`w-full px-3 py-2 border bg-[var(--bg-surface)] text-[var(--text-primary)] text-sm appearance-none cursor-pointer focus:outline-none focus:border-[var(--accent-acid)] ${errors.category ? "border-red-500" : "border-[var(--border-raw)]"}`}
               >
                 <option value="">Select category</option>
                 {CATEGORIES.map((c) => (
@@ -138,11 +138,11 @@ export default function NewPostPage() {
               {errors.category && <p className="text-xs text-red-500">{errors.category}</p>}
             </div>
             <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-[var(--foreground)]">Type</label>
+              <label className="text-sm font-medium text-[var(--text-primary)]">Type</label>
               <select
                 value={form.type}
                 onChange={(e) => setForm({ ...form, type: e.target.value })}
-                className={`w-full px-3 py-2 rounded-xl border bg-[var(--card)] text-[var(--foreground)] text-sm appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent ${errors.type ? "border-red-500" : "border-[var(--border)]"}`}
+                className={`w-full px-3 py-2 border bg-[var(--bg-surface)] text-[var(--text-primary)] text-sm appearance-none cursor-pointer focus:outline-none focus:border-[var(--accent-acid)] ${errors.type ? "border-red-500" : "border-[var(--border-raw)]"}`}
               >
                 <option value="">Select type</option>
                 {POST_TYPES.map((t) => (
@@ -165,8 +165,8 @@ export default function NewPostPage() {
         {/* Keywords */}
         <div className="card p-6 flex flex-col gap-5">
           <div>
-            <h2 className="font-semibold text-[var(--foreground)] mb-0.5">Keywords</h2>
-            <p className="text-xs text-[var(--muted-foreground)]">
+            <h2 className="font-semibold font-display tracking-widest uppercase text-[var(--text-primary)] mb-0.5">Keywords</h2>
+            <p className="text-xs text-[var(--text-dim)]">
               Keywords power the matching engine. Be specific — &quot;acoustic guitar&quot; beats &quot;music&quot;.
             </p>
           </div>
@@ -194,7 +194,7 @@ export default function NewPostPage() {
             {/* Keyword suggestions */}
             {suggestions.length > 0 && (
               <div className="mt-2">
-                <p className="text-xs text-[var(--muted-foreground)] mb-1.5">
+                <p className="text-xs text-[var(--text-dim)] mb-1.5">
                   Popular offers in the community — click to add:
                 </p>
                 <div className="flex flex-wrap gap-1.5">
@@ -223,11 +223,11 @@ export default function NewPostPage() {
               onChange={(e) => setSeekInput(e.target.value)}
               onFocus={() => setSeekInput("")}
             />
-            <p className="text-xs text-[var(--muted-foreground)] mt-1">
+            <p className="text-xs text-[var(--text-dim)] mt-1">
               Start typing seek keywords above to see community suggestions.{" "}
               <button
                 type="button"
-                className="text-[var(--primary)] hover:underline"
+                className="text-[var(--accent-acid)] hover:underline"
                 onClick={async () => {
                   const res = await fetch("/api/keywords/suggestions?limit=12");
                   const data = await res.json();
@@ -243,8 +243,8 @@ export default function NewPostPage() {
         {/* Images */}
         <div className="card p-6 flex flex-col gap-4">
           <div>
-            <h2 className="font-semibold text-[var(--foreground)] mb-0.5">Images (optional)</h2>
-            <p className="text-xs text-[var(--muted-foreground)]">Add image URLs. Up to 5 images.</p>
+            <h2 className="font-semibold font-display tracking-widest uppercase text-[var(--text-primary)] mb-0.5">Images (optional)</h2>
+            <p className="text-xs text-[var(--text-dim)]">Add image URLs. Up to 5 images.</p>
           </div>
           {images.length < 5 && (
             <div className="flex gap-2">
@@ -262,7 +262,7 @@ export default function NewPostPage() {
                     }
                   }
                 }}
-                className="flex-1 px-3 py-2 rounded-xl border border-[var(--border)] bg-[var(--card)] text-[var(--foreground)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ring)]"
+                className="flex-1 px-3 py-2 border border-[var(--border-raw)] bg-[var(--bg-surface)] text-[var(--text-primary)] text-sm focus:outline-none focus:border-[var(--accent-acid)]"
               />
               <Button
                 type="button"
@@ -284,7 +284,7 @@ export default function NewPostPage() {
               {images.map((img, i) => (
                 <div key={i} className="relative group">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={img} alt="" className="h-16 w-16 rounded-lg object-cover border border-[var(--border)]" />
+                  <img src={img} alt="" className="h-16 w-16 object-cover border border-[var(--border-raw)]" />
                   <button
                     type="button"
                     onClick={() => setImages(images.filter((_, j) => j !== i))}

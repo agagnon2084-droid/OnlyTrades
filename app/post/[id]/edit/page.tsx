@@ -108,32 +108,32 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
   return (
     <div className="max-w-2xl mx-auto px-4 py-10">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-[var(--foreground)] mb-1">Edit Post</h1>
-        <p className="text-[var(--muted-foreground)] text-sm">Update your trade listing.</p>
+        <h1 className="text-3xl font-bold font-display tracking-widest uppercase text-[var(--text-primary)] mb-1">Edit Post</h1>
+        <p className="text-[var(--text-dim)] text-sm">Update your trade listing.</p>
       </div>
 
       <form onSubmit={handleSave} className="flex flex-col gap-6">
         <div className="card p-6 flex flex-col gap-5">
-          <h2 className="font-semibold text-[var(--foreground)]">Basic Info</h2>
+          <h2 className="font-semibold font-display tracking-widest uppercase text-[var(--text-primary)]">Basic Info</h2>
           <Input label="Title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
           <Textarea label="Description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={5} />
           <div className="grid grid-cols-2 gap-4">
             <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-[var(--foreground)]">Category</label>
-              <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className="w-full px-3 py-2 rounded-xl border border-[var(--border)] bg-[var(--card)] text-[var(--foreground)] text-sm appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[var(--ring)]">
+              <label className="text-sm font-medium text-[var(--text-primary)]">Category</label>
+              <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className="w-full px-3 py-2 border border-[var(--border-raw)] bg-[var(--bg-surface)] text-[var(--text-primary)] text-sm appearance-none cursor-pointer focus:outline-none focus:border-[var(--accent-acid)]">
                 {CATEGORIES.map((c) => <option key={c.value} value={c.value}>{c.icon} {c.label}</option>)}
               </select>
             </div>
             <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-[var(--foreground)]">Type</label>
-              <select value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })} className="w-full px-3 py-2 rounded-xl border border-[var(--border)] bg-[var(--card)] text-[var(--foreground)] text-sm appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[var(--ring)]">
+              <label className="text-sm font-medium text-[var(--text-primary)]">Type</label>
+              <select value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })} className="w-full px-3 py-2 border border-[var(--border-raw)] bg-[var(--bg-surface)] text-[var(--text-primary)] text-sm appearance-none cursor-pointer focus:outline-none focus:border-[var(--accent-acid)]">
                 {POST_TYPES.map((t) => <option key={t.value} value={t.value}>{t.label}</option>)}
               </select>
             </div>
           </div>
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-[var(--foreground)]">Status</label>
-            <select value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })} className="w-full px-3 py-2 rounded-xl border border-[var(--border)] bg-[var(--card)] text-[var(--foreground)] text-sm appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[var(--ring)]">
+            <label className="text-sm font-medium text-[var(--text-primary)]">Status</label>
+            <select value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })} className="w-full px-3 py-2 border border-[var(--border-raw)] bg-[var(--bg-surface)] text-[var(--text-primary)] text-sm appearance-none cursor-pointer focus:outline-none focus:border-[var(--accent-acid)]">
               {Object.entries(POST_STATUSES).map(([v, s]) => <option key={v} value={v}>{s.label}</option>)}
             </select>
           </div>
@@ -141,16 +141,16 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
         </div>
 
         <div className="card p-6 flex flex-col gap-5">
-          <h2 className="font-semibold text-[var(--foreground)]">Keywords</h2>
+          <h2 className="font-semibold font-display tracking-widest uppercase text-[var(--text-primary)]">Keywords</h2>
           <TagInput label="Offering" value={offerKeywords} onChange={setOfferKeywords} variant="offer" />
           <TagInput label="Seeking" value={seekKeywords} onChange={setSeekKeywords} variant="seek" />
         </div>
 
         <div className="card p-6 flex flex-col gap-4">
-          <h2 className="font-semibold text-[var(--foreground)]">Images</h2>
+          <h2 className="font-semibold font-display tracking-widest uppercase text-[var(--text-primary)]">Images</h2>
           {images.length < 5 && (
             <div className="flex gap-2">
-              <input type="url" placeholder="https://..." value={imageInput} onChange={(e) => setImageInput(e.target.value)} className="flex-1 px-3 py-2 rounded-xl border border-[var(--border)] bg-[var(--card)] text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ring)]" />
+              <input type="url" placeholder="https://..." value={imageInput} onChange={(e) => setImageInput(e.target.value)} className="flex-1 px-3 py-2 border border-[var(--border-raw)] bg-[var(--bg-surface)] text-sm focus:outline-none focus:border-[var(--accent-acid)]" />
               <Button type="button" variant="secondary" size="sm" onClick={() => { if (imageInput.trim()) { setImages([...images, imageInput.trim()]); setImageInput(""); } }}>Add</Button>
             </div>
           )}
@@ -158,7 +158,7 @@ export default function EditPostPage({ params }: { params: Promise<{ id: string 
             {images.map((img, i) => (
               <div key={i} className="relative group">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={img} alt="" className="h-16 w-16 rounded-lg object-cover border border-[var(--border)]" />
+                <img src={img} alt="" className="h-16 w-16 object-cover border border-[var(--border-raw)]" />
                 <button type="button" onClick={() => setImages(images.filter((_, j) => j !== i))} className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">×</button>
               </div>
             ))}

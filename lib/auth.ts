@@ -4,9 +4,41 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
+import type { Adapter, AdapterUser } from "next-auth/adapters";
+
+// Wrap PrismaAdapter to map NextAuth's `image` field to our `avatar` column
+const basePrismaAdapter = PrismaAdapter(prisma) as Adapter;
+const adapter: Adapter = {
+  ...basePrismaAdapter,
+  createUser: async (data: Omit<AdapterUser, "id">) => {
+    const { image, ...rest } = data;
+    const user = await prisma.user.create({
+      data: { ...rest, avatar: image },
+    });
+    return { ...user, image: user.avatar } as AdapterUser;
+  },
+  getUser: async (id: string) => {
+    const user = await prisma.user.findUnique({ where: { id } });
+    if (!user) return null;
+    return { ...user, image: user.avatar } as AdapterUser;
+  },
+  getUserByEmail: async (email: string) => {
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (!user) return null;
+    return { ...user, image: user.avatar } as AdapterUser;
+  },
+  getUserByAccount: async (providerAccountId) => {
+    const account = await prisma.account.findUnique({
+      where: { provider_providerAccountId: providerAccountId },
+      include: { user: true },
+    });
+    if (!account?.user) return null;
+    return { ...account.user, image: account.user.avatar } as AdapterUser;
+  },
+};
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  adapter: PrismaAdapter(prisma),
+  adapter,
   session: { strategy: "jwt" },
   pages: {
     signIn: "/login",
